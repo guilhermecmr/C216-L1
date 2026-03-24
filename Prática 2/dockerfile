@@ -1,0 +1,11 @@
+# Define a imagem base
+FROM python:3.10-slim
+
+# Define o diretório de trabalho dentro do container
+WORKDIR /app
+
+# Copia um arquivo para o diretório de trabalho no container
+COPY sistema_faculdade.py .
+
+# Define o comando de execução ao iniciar o container
+CMD ["python", "sistema_faculdade.py"]
