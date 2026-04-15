@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  backend:
+    build: .
+    container_name: faculdade_api
+    restart: always
+    ports: 
+      - "8000:8000"

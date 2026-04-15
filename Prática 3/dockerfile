@@ -1,0 +1,17 @@
+# Define a imagem base
+FROM python:3.10-slim
+
+# Define o diretório de trabalho dentro do container
+WORKDIR /app
+
+# Copia dependências para o diretório de trabalho no container
+COPY requirements.txt .
+
+# Instala as dependências do projeto
+RUN pip install -r requirements.txt
+
+# Copia o projeto para o diretório de trabalho no container
+COPY main.py .
+
+# Comando para rodar
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
