@@ -1,0 +1,42 @@
+services:
+  api:
+    build: .
+    container_name: middleware_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/faculdade_db
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: faculdade_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./app/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  tests:
+    build: .
+    container_name: middleware_tests
+    volumes:
+      - .:/app
+    command: pytest -v
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
+
