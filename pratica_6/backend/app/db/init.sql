@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS alunos (
+    id VARCHAR(20) PRIMARY KEY,
+    matricula INTEGER NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    curso VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS contadores (
+    curso VARCHAR(10) PRIMARY KEY,
+    ultimo_numero INTEGER NOT NULL
+);

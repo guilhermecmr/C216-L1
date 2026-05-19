@@ -1,0 +1,51 @@
+services:
+  api:
+    build: ./backend
+    container_name: faculdade_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/faculdade_db
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: faculdade_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/app/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  tests:
+    build: ./backend
+    container_name: faculdade_tests
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+    command: pytest -v 
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      - api
+
+  frontend:
+    build: ./frontend
+    container_name: faculdade_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
